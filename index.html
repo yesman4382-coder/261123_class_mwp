@@ -3,137 +3,152 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>민준 ♥ 서연 결혼합니다</title>
+  <title>MELLOW BEAN | 대구 동성로 카페</title>
+  <meta name="description" content="밤에 더 깊어지는 커피, 대구 동성로 카페 MELLOW BEAN">
+
+  <!-- 글꼴: 제목 Playfair Display + Noto Serif KR, 본문 Pretendard -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
 </head>
 <body>
-  <main class="invitation">
 
-    <!-- 메인 커버 -->
-    <section class="cover">
-      <div class="petals" aria-hidden="true"></div>
-      <p class="cover-label">WEDDING INVITATION</p>
-      <div class="cover-photo" aria-label="웨딩 사진 자리">
-        <span>Photo</span>
-      </div>
-      <h1 class="cover-names">
-        김민준 <span class="amp">&amp;</span> 이서연
-      </h1>
-      <p class="cover-date">2027. 05. 15. 토요일 오후 1시</p>
-      <p class="cover-place">더채플 앳 청담 3층 그랜드홀</p>
-    </section>
+  <!-- 상단 메뉴 -->
+  <header class="site-header">
+    <a href="#top" class="logo">MELLOW BEAN</a>
+    <nav class="nav">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#visit">Visit</a>
+    </nav>
+  </header>
 
-    <!-- 인사말 -->
-    <section class="section greeting fade-in">
-      <h2 class="section-title">초대합니다</h2>
-      <p class="greeting-text">
-        서로 다른 길을 걸어온 두 사람이<br>
-        이제 같은 길을 함께 걸어가려 합니다.<br><br>
-        저희의 새로운 시작을<br>
-        따뜻한 마음으로 축복해 주시면<br>
-        더없는 기쁨으로 간직하겠습니다.
-      </p>
-      <div class="parents">
-        <p><span class="parent-name">김철수 · 박영희</span>의 아들 <strong>민준</strong></p>
-        <p><span class="parent-name">이정호 · 최미경</span>의 딸 <strong>서연</strong></p>
+  <main id="top">
+
+    <!-- 1. 첫 화면 (풀스크린 사진) -->
+    <section class="hero">
+      <img class="hero-bg" src="images/cafe-interior.jpg" alt="넓은 창과 식물이 있는 MELLOW BEAN 매장 내부">
+      <div class="hero-content">
+        <p class="eyebrow">Since 2026 · Daegu</p>
+        <h1 class="hero-title">MELLOW BEAN</h1>
+        <p class="hero-tagline">밤에 더 깊어지는 커피</p>
+        <a href="#menu" class="btn">메뉴 보기</a>
       </div>
     </section>
 
-    <!-- 날짜 / 달력 -->
-    <section class="section calendar-section fade-in">
-      <h2 class="section-title">예식 일시</h2>
-      <p class="calendar-heading">2027년 5월 15일 토요일 오후 1시</p>
-      <div class="calendar" id="calendar"></div>
-      <div class="countdown" id="countdown">
-        <div><strong id="cd-days">0</strong><span>DAYS</span></div>
-        <div><strong id="cd-hours">0</strong><span>HOUR</span></div>
-        <div><strong id="cd-mins">0</strong><span>MIN</span></div>
-        <div><strong id="cd-secs">0</strong><span>SEC</span></div>
+    <!-- 2. 소개 -->
+    <section id="about" class="about">
+      <div class="about-photo">
+        <img src="images/hand-drip-coffee.jpg" alt="바리스타가 핸드드립으로 커피를 내리는 모습">
       </div>
-      <p class="dday-text" id="dday-text"></p>
+      <div class="about-text">
+        <p class="eyebrow">About</p>
+        <h2 class="section-title">천천히, 한 잔씩</h2>
+        <p>
+          MELLOW BEAN은 동성로 한가운데, 조금 높은 곳에 자리한 작은 카페입니다.
+          바쁜 하루를 보낸 뒤 잠시 쉬어 갈 수 있도록, 조명은 낮추고 커피는 천천히 내립니다.
+        </p>
+        <p>
+          그날의 원두를 골라 한 잔씩 정성껏 내리는 핸드드립부터
+          부드러운 라떼와 직접 만든 디저트까지, 편안한 저녁의 한 자리를 준비했습니다.
+        </p>
+      </div>
     </section>
 
-    <!-- 갤러리 -->
-    <section class="section gallery-section fade-in">
-      <h2 class="section-title">갤러리</h2>
-      <div class="gallery" id="gallery">
-        <button class="gallery-item g1" data-index="0" aria-label="사진 1"></button>
-        <button class="gallery-item g2" data-index="1" aria-label="사진 2"></button>
-        <button class="gallery-item g3" data-index="2" aria-label="사진 3"></button>
-        <button class="gallery-item g4" data-index="3" aria-label="사진 4"></button>
-        <button class="gallery-item g5" data-index="4" aria-label="사진 5"></button>
-        <button class="gallery-item g6" data-index="5" aria-label="사진 6"></button>
+    <!-- 3. 메뉴 -->
+    <section id="menu" class="menu">
+      <div class="section-head">
+        <p class="eyebrow">Menu</p>
+        <h2 class="section-title">오늘의 메뉴</h2>
       </div>
-      <p class="hint">사진을 누르면 크게 볼 수 있어요</p>
+
+      <ul class="menu-grid">
+        <li class="menu-card">
+          <img src="images/hand-drip-coffee.jpg" alt="핸드드립 커피" loading="lazy">
+          <div class="menu-info">
+            <span class="menu-category">Coffee</span>
+            <h3 class="menu-name">Hand Drip Coffee</h3>
+            <p class="menu-price">6,000원</p>
+          </div>
+        </li>
+        <li class="menu-card">
+          <img src="images/cafe-latte.jpg" alt="라떼아트가 그려진 카페 라떼" loading="lazy">
+          <div class="menu-info">
+            <span class="menu-category">Coffee</span>
+            <h3 class="menu-name">Cafe Latte</h3>
+            <p class="menu-price">5,000원</p>
+          </div>
+        </li>
+        <li class="menu-card">
+          <img src="images/latte-with-cookie.jpg" alt="라떼와 초코칩 쿠키" loading="lazy">
+          <div class="menu-info">
+            <span class="menu-category">Coffee</span>
+            <h3 class="menu-name">Latte With Cookie</h3>
+            <p class="menu-price">6,500원</p>
+          </div>
+        </li>
+        <li class="menu-card">
+          <img src="images/strawberry-latte.jpg" alt="딸기를 올린 딸기 라떼" loading="lazy">
+          <div class="menu-info">
+            <span class="menu-category">Beverage</span>
+            <h3 class="menu-name">Strawberry Latte</h3>
+            <p class="menu-price">6,000원</p>
+          </div>
+        </li>
+        <li class="menu-card">
+          <img src="images/lemon-ade.jpg" alt="줄무늬 빨대를 꽂은 레몬 에이드" loading="lazy">
+          <div class="menu-info">
+            <span class="menu-category">Beverage</span>
+            <h3 class="menu-name">Lemon Ade</h3>
+            <p class="menu-price">5,500원</p>
+          </div>
+        </li>
+        <li class="menu-card">
+          <img src="images/tiramisu.jpg" alt="초콜릿 장식을 올린 티라미수" loading="lazy">
+          <div class="menu-info">
+            <span class="menu-category">Dessert</span>
+            <h3 class="menu-name">Tiramisu</h3>
+            <p class="menu-price">6,500원</p>
+          </div>
+        </li>
+      </ul>
     </section>
 
-    <!-- 오시는 길 -->
-    <section class="section location fade-in">
-      <h2 class="section-title">오시는 길</h2>
-      <p class="venue-name">더채플 앳 청담</p>
-      <p class="venue-addr">서울특별시 강남구 선릉로 757</p>
-      <div class="map-placeholder">지도 영역</div>
-      <div class="map-links">
-        <a href="https://map.naver.com/p/search/더채플앳청담" target="_blank" rel="noopener">네이버 지도</a>
-        <a href="https://map.kakao.com/?q=더채플앳청담" target="_blank" rel="noopener">카카오맵</a>
+    <!-- 4. 위치·영업시간 -->
+    <section id="visit" class="visit">
+      <div class="section-head">
+        <p class="eyebrow">Visit · 찾아오시는 길</p>
+        <h2 class="visit-quote"><span>“오늘 밤도,</span> <span>아홉 시까지”</span></h2>
       </div>
-      <dl class="transport">
-        <dt>지하철</dt>
-        <dd>7호선 청담역 13번 출구 도보 10분</dd>
-        <dt>버스</dt>
-        <dd>청담사거리 정류장 하차 (301, 342, 472)</dd>
-        <dt>주차</dt>
-        <dd>건물 내 주차장 2시간 무료</dd>
+
+      <dl class="visit-info">
+        <div class="visit-item">
+          <dt>Address</dt>
+          <dd>대구 중구<br>동성로3가 5층</dd>
+        </div>
+        <div class="visit-item">
+          <dt>Hours</dt>
+          <dd>매일 09:00 – 21:00<br><span class="note">연중무휴</span></dd>
+        </div>
       </dl>
+
+      <p class="visit-status"><span class="open-status" hidden></span></p>
+
+      <figure class="visit-map">
+        <img src="images/cafe-map.png" alt="MELLOW BEAN 위치 지도. 반월당역 북쪽, 동성로 골목에 빨간 원으로 표시" width="487" height="375" loading="lazy">
+      </figure>
     </section>
 
-    <!-- 마음 전하실 곳 -->
-    <section class="section account fade-in">
-      <h2 class="section-title">마음 전하실 곳</h2>
-      <details class="account-box">
-        <summary>신랑측 계좌번호</summary>
-        <div class="account-row">
-          <span>국민은행 123-456-789012 <em>김민준</em></span>
-          <button class="copy-btn" data-copy="국민은행 123-456-789012">복사</button>
-        </div>
-        <div class="account-row">
-          <span>신한은행 110-234-567890 <em>김철수</em></span>
-          <button class="copy-btn" data-copy="신한은행 110-234-567890">복사</button>
-        </div>
-      </details>
-      <details class="account-box">
-        <summary>신부측 계좌번호</summary>
-        <div class="account-row">
-          <span>우리은행 1002-345-678901 <em>이서연</em></span>
-          <button class="copy-btn" data-copy="우리은행 1002-345-678901">복사</button>
-        </div>
-        <div class="account-row">
-          <span>하나은행 456-789012-34507 <em>이정호</em></span>
-          <button class="copy-btn" data-copy="하나은행 456-789012-34507">복사</button>
-        </div>
-      </details>
-    </section>
-
-    <footer class="footer">
-      <button class="share-btn" id="share-btn">청첩장 링크 공유하기</button>
-      <p>Thank you for celebrating with us</p>
-    </footer>
   </main>
 
-  <!-- 갤러리 확대 보기 -->
-  <div class="lightbox" id="lightbox" hidden>
-    <button class="lb-close" id="lb-close" aria-label="닫기">&times;</button>
-    <button class="lb-nav lb-prev" id="lb-prev" aria-label="이전">&#8249;</button>
-    <div class="lb-image" id="lb-image"></div>
-    <button class="lb-nav lb-next" id="lb-next" aria-label="다음">&#8250;</button>
-  </div>
+  <footer class="site-footer">
+    <p class="footer-logo">MELLOW BEAN</p>
+    <p>&copy; <span class="year">2026</span> MELLOW BEAN. All rights reserved.</p>
+  </footer>
 
-  <!-- 알림 토스트 -->
-  <div class="toast" id="toast"></div>
-
-  <script src="js/main.js"></script>
 </body>
 </html>

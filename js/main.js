@@ -1,176 +1,102 @@
-// ===== 예식 정보 (여기만 바꾸면 달력·카운트다운이 함께 바뀝니다) =====
-const WEDDING_DATE = new Date(2027, 4, 15, 13, 0, 0); // 월은 0부터 시작 (4 = 5월)
+/* ==========================================================
+   MELLOW BEAN — 페이지 동작
+   1. 스크롤에 따라 상단 메뉴바 배경 바꾸기
+   2. 지금 보고 있는 섹션의 메뉴 강조하기
+   3. 스크롤하면 섹션과 카드가 부드럽게 나타나기
+   4. 현재 시각 기준 "영업 중 / 영업 종료" 표시
+   ========================================================== */
 
-// ===== 토스트 알림 =====
-const toast = document.getElementById('toast');
-let toastTimer;
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+document.documentElement.classList.add('js');
+
+const header = document.querySelector('.site-header');
+const navLinks = document.querySelectorAll('.nav a');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- 1. 상단 메뉴바: 첫 화면 위에서는 투명, 내려가면 네이비 ---------- */
+function updateHeader() {
+  header.classList.toggle('is-top', window.scrollY < 40);
 }
+updateHeader();
+window.addEventListener('scroll', updateHeader, { passive: true });
 
-// ===== 달력 그리기 =====
-function renderCalendar() {
-  const calendar = document.getElementById('calendar');
-  const year = WEDDING_DATE.getFullYear();
-  const month = WEDDING_DATE.getMonth();
-  const weddingDay = WEDDING_DATE.getDate();
-
-  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-  let html = dayNames
-    .map((d, i) => `<div class="day-name${i === 0 ? ' sun' : ''}">${d}</div>`)
-    .join('');
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month + 1, 0).getDate();
-
-  for (let i = 0; i < firstDay; i++) html += '<div></div>';
-
-  for (let date = 1; date <= lastDate; date++) {
-    const classes = ['day'];
-    if ((firstDay + date - 1) % 7 === 0) classes.push('sun');
-    if (date === weddingDay) classes.push('wedding');
-    html += `<div class="${classes.join(' ')}">${date}</div>`;
-  }
-
-  calendar.innerHTML = html;
-}
-
-// ===== 카운트다운 =====
-function updateCountdown() {
-  const diff = WEDDING_DATE - new Date();
-  const ddayText = document.getElementById('dday-text');
-
-  if (diff <= 0) {
-    ['cd-days', 'cd-hours', 'cd-mins', 'cd-secs'].forEach(id => {
-      document.getElementById(id).textContent = 0;
+/* ---------- 2. 지금 보고 있는 섹션의 메뉴 강조 ---------- */
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => {
+        const isCurrent = link.getAttribute('href') === `#${entry.target.id}`;
+        link.classList.toggle('is-active', isCurrent);
+        if (isCurrent) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
     });
-    ddayText.innerHTML = '민준 ♥ 서연, <em>결혼했습니다!</em>';
-    return;
-  }
+  },
+  { rootMargin: '-45% 0px -50% 0px' } // 화면 가운데에 걸친 섹션을 "현재"로 봄
+);
+document.querySelectorAll('main section[id]').forEach((section) => sectionObserver.observe(section));
 
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff / 3600000) % 24);
-  const mins = Math.floor((diff / 60000) % 60);
-  const secs = Math.floor((diff / 1000) % 60);
+/* ---------- 3. 스크롤하면 부드럽게 나타나기 ---------- */
+const revealTargets = document.querySelectorAll('.about-photo, .about-text, .section-head, .menu-card, .visit-item, .visit-status, .visit-map');
 
-  document.getElementById('cd-days').textContent = days;
-  document.getElementById('cd-hours').textContent = hours;
-  document.getElementById('cd-mins').textContent = mins;
-  document.getElementById('cd-secs').textContent = secs;
-  ddayText.innerHTML = `민준 ♥ 서연의 결혼식이 <em>${days}일</em> 남았습니다`;
-}
-
-// ===== 스크롤 등장 효과 =====
-function initFadeIn() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+if (reduceMotion) {
+  revealTargets.forEach((el) => el.classList.add('is-visible'));
+} else {
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
-      }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  // 메뉴 카드는 같은 줄에서 왼쪽부터 조금씩 늦게 나타나게
+  // (화면 폭에 따라 3열/2열로 바뀌므로 지금 열 수를 읽어서 계산)
+  const menuGrid = document.querySelector('.menu-grid');
+  function setCardDelays() {
+    if (!menuGrid) return;
+    const columns = getComputedStyle(menuGrid).gridTemplateColumns.split(' ').length;
+    [...menuGrid.children].forEach((card, index) => {
+      card.style.transitionDelay = card.classList.contains('is-visible') ? '' : `${(index % columns) * 0.12}s`;
     });
-  }, { threshold: 0.15 });
+  }
+  setCardDelays();
+  window.addEventListener('resize', setCardDelays);
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  revealTargets.forEach((el) => revealObserver.observe(el));
 }
 
-// ===== 꽃잎 효과 =====
-function createPetals() {
-  const container = document.querySelector('.petals');
-  for (let i = 0; i < 18; i++) {
-    const petal = document.createElement('span');
-    petal.className = 'petal';
-    const size = 6 + Math.random() * 8;
-    petal.style.width = `${size}px`;
-    petal.style.height = `${size}px`;
-    petal.style.left = `${Math.random() * 100}%`;
-    petal.style.setProperty('--drift', `${(Math.random() - 0.5) * 160}px`);
-    petal.style.animationDuration = `${6 + Math.random() * 6}s`;
-    petal.style.animationDelay = `${Math.random() * 5}s`;
-    container.appendChild(petal);
-  }
+/* ---------- 4. 영업 중 / 영업 종료 표시 (대구 = 한국 시간 기준) ---------- */
+const OPEN_HOUR = 9;
+const CLOSE_HOUR = 21;
+const statusEl = document.querySelector('.open-status');
+
+function getKoreaHour() {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Seoul',
+    hour: 'numeric',
+    minute: 'numeric',
+    hourCycle: 'h23',
+  }).formatToParts(new Date());
+  const hour = Number(parts.find((p) => p.type === 'hour').value);
+  const minute = Number(parts.find((p) => p.type === 'minute').value);
+  return hour + minute / 60;
 }
 
-// ===== 갤러리 라이트박스 =====
-function initGallery() {
-  const items = [...document.querySelectorAll('.gallery-item')];
-  const lightbox = document.getElementById('lightbox');
-  const lbImage = document.getElementById('lb-image');
-  let current = 0;
-
-  function show(index) {
-    current = (index + items.length) % items.length;
-    lbImage.style.background = getComputedStyle(items[current]).background;
-  }
-
-  function open(index) {
-    show(index);
-    lightbox.hidden = false;
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    lightbox.hidden = true;
-    document.body.style.overflow = '';
-  }
-
-  items.forEach((item, i) => item.addEventListener('click', () => open(i)));
-  document.getElementById('lb-close').addEventListener('click', close);
-  document.getElementById('lb-prev').addEventListener('click', () => show(current - 1));
-  document.getElementById('lb-next').addEventListener('click', () => show(current + 1));
-  lightbox.addEventListener('click', e => { if (e.target === lightbox) close(); });
-
-  document.addEventListener('keydown', e => {
-    if (lightbox.hidden) return;
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') show(current - 1);
-    if (e.key === 'ArrowRight') show(current + 1);
-  });
+function updateOpenStatus() {
+  if (!statusEl) return;
+  const now = getKoreaHour();
+  const isOpen = now >= OPEN_HOUR && now < CLOSE_HOUR;
+  statusEl.textContent = isOpen ? '지금 영업 중' : '영업 종료 · 내일 09:00 오픈';
+  statusEl.classList.toggle('is-open', isOpen);
+  statusEl.hidden = false;
 }
+updateOpenStatus();
+setInterval(updateOpenStatus, 60 * 1000); // 1분마다 다시 확인
 
-// ===== 복사 기능 =====
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch {
-    // 로컬 파일(file://)로 열었을 때를 위한 대체 방법
-    const temp = document.createElement('textarea');
-    temp.value = text;
-    document.body.appendChild(temp);
-    temp.select();
-    document.execCommand('copy');
-    temp.remove();
-  }
-}
-
-function initCopyButtons() {
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      await copyText(btn.dataset.copy);
-      showToast('계좌번호가 복사되었습니다');
-    });
-  });
-
-  document.getElementById('share-btn').addEventListener('click', async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: document.title, url: location.href });
-      } catch { /* 사용자가 공유를 취소한 경우 */ }
-    } else {
-      await copyText(location.href);
-      showToast('청첩장 링크가 복사되었습니다');
-    }
-  });
-}
-
-// ===== 실행 =====
-renderCalendar();
-updateCountdown();
-setInterval(updateCountdown, 1000);
-initFadeIn();
-createPetals();
-initGallery();
-initCopyButtons();
+/* ---------- 푸터 연도 ---------- */
+const yearEl = document.querySelector('.year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
